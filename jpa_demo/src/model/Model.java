@@ -26,19 +26,19 @@ public class Model {
     @OneToMany(mappedBy = "model")
     private List<Trim> trims;
 
-    // // Many-to-many with Visitors, representing the museum's Members.
+    // // Many-to-many with Features.
     // // One of the two classes in the many-to-many sets up the JoinTable attribute,
     // // which specifies the name of the junction table, which column is the FK to
     // // **this** (Museum) class, and which column is to the inverse table -- the
     // // *other* class (Visitor) in the association.
     // // A JoinTable is only needed when there is no association (junction) class.
-    // @JoinTable(
-    //     name = "members", 
-    //     joinColumns = @JoinColumn(name = "museum_id"), 
-    //     inverseJoinColumns = @JoinColumn(name = "visitor_id")
-    // )
-    // @ManyToMany
-    // private Set<Visitor> members;
+    @JoinTable(
+        name = "modelFeatures", 
+        joinColumns = @JoinColumn(name = "model_id"), 
+        inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
+    @ManyToMany
+    private Set<Feature> modelFeatures;
 
     // // Many-to-many with Visitors, via the MuseumVisits association (junction) class.
     // @OneToMany(mappedBy = "museum")
@@ -82,11 +82,6 @@ public class Model {
         this.modelId = modelId;
     }
 
-    @Override
-    public String toString() {
-        return name + " (ID " + modelId + "), " + year;
-    }
-
     public List<Trim> getTrims() {
         return trims;
     }
@@ -94,6 +89,22 @@ public class Model {
     public void setTrims(List<Trim> trims) {
         this.trims = trims;
     }
+
+    public Set<Feature> getModelFeatures() {
+        return modelFeatures;
+    }
+
+    public void setModelFeatures(Set<Feature> modelFeatures) {
+        this.modelFeatures = modelFeatures;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (ID " + modelId + "), " + year;
+    }
+
+
+    
 
     // public Superintendent getSuperintendent() {
     //     return superintendent;
@@ -109,14 +120,6 @@ public class Model {
 
     // public void setVisits(Set<MuseumVisit> visits) {
     //     this.visits = visits;
-    // }
-
-    // public Set<Visitor> getMembers() {
-    //     return members;
-    // }
-
-    // public void setMembers(Set<Visitor> members) {
-    //     this.members = members;
     // }
 
 }

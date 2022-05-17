@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Entity(name = "trims")
 public class Trim {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trim_id")
     private int trimId;
 
@@ -33,7 +34,18 @@ public class Trim {
     //     this.artpieces = artpieces;
     // }
     
+    // Many-to-many with Features, with no association class.
+    @JoinTable(
+        name = "trimFeatures", 
+        joinColumns = @JoinColumn(name = "trim_id"), 
+        inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
+    @ManyToMany
+    private Set<Feature> trimFeatures;
 
+    // Many-to-many with Packages, via the Available association (junction) class.
+    @OneToMany(mappedBy = "trim")
+    private Set<AvailablePackage> availablePackages;
     
     public Trim() {
     }
@@ -82,6 +94,15 @@ public class Trim {
         this.model = model;
     }
 
+    public Set<Feature> getTrimFeatures() {
+        return trimFeatures;
+    }
+
+    public void setTrimFeatures(Set<Feature> trimFeatures) {
+        this.trimFeatures = trimFeatures;
+    }
+
+    
     
 
     
